@@ -1,5 +1,10 @@
 // Assignment Code
 let charactersPool = []
+let uppercasePool = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+let lowercasePool = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z"]
+let numbersPool = ["0","1","2","3","4","5","6","7","8","9"]
+let specialCharactersPool = ["¡","!","@","#","$","%","^","&","*","(",")","_","+","-","=","\"","[","\\","]","{","}",";","'",":","|",",",".","<",">","/","¿","?"]
+console.log(charactersPool)
 let passwordLength = 0
 let passwordUppercase = false
 let passwordLowercase = false
@@ -9,9 +14,7 @@ let specialCharacters = false
 var generateBtn = document.querySelector("#generate");
 var passwordText = document.querySelector("#password");
 
-var format = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/
 
-console.log(format)
 function generatePasswordClick() {
     passwordLengthPrompt()
 }
@@ -27,32 +30,116 @@ function passwordLengthPrompt() {
 function passwordUppercaseConfirm() {
     console.log(passwordLength)
     passwordUppercase = window.confirm('Do you want to use uppercase letters?')
+    if (passwordUppercase === true) {
+        charactersPool += uppercasePool
+        console.log(charactersPool)
+    }
     passwordLowercaseConfirm()
 }
 function passwordLowercaseConfirm() {
     console.log(passwordUppercase)
     passwordLowercase = window.confirm('Do you want to use lowercase letters?')
+    if (passwordLowercase === true) {
+        charactersPool += "," + lowercasePool
+        console.log(charactersPool)
+    }
     passwordNumbersConfirm()
 }
 function passwordNumbersConfirm() {
     console.log(passwordLowercase)
     passwordNumbers = window.confirm('Do you want to use numbers?')
+    if (passwordNumbers === true) {
+        charactersPool += "," + numbersPool
+        console.log(charactersPool)
+    }
     specialCharactersConfirm()
 }
 function specialCharactersConfirm() {
     console.log(passwordNumbers)
     specialCharacters = window.confirm('Do you want to use special characters?')
+    if (specialCharacters === true) {
+        charactersPool += "," + specialCharactersPool
+        console.log(charactersPool)
+    }
     writePassword()
 }
 
 
 // Write password to the #password input
 function writePassword() {
-    console.log(specialCharacters)
+    console.log('Im writing a new password')
+    let password = ''
+    let includesUppercase = false
+    let includesLowercase = false
+    let includesNumbers = false
+    let includesSpecialCharacters = false
+    if (charactersPool[0] === ",") charactersPool = charactersPool.slice(1, passwordLength)
+    charactersPoolArraySplit = charactersPool.split(",")
+    for (i = 0; i < passwordLength; i++ ) {
+        password += charactersPoolArraySplit[Math.floor(Math.random()*charactersPoolArraySplit.length)]
+    }
 
-    // var password = generatePassword();
+    if (passwordUppercase === true) {
+        for (i = 0; i < uppercasePool.length; i++) {
+            includesUppercase = password.includes(uppercasePool[i]) 
+            console.log(includesUppercase)  
+            if (includesUppercase === true) {
+                break;
+            } 
+        }
+        if (includesUppercase === false) {
+            charactersPool = charactersPoolArraySplit.join(",")
+            writePassword()
+            return
+        }
+    }    
+    if (passwordLowercase === true) {
+        for (i = 0; i < lowercasePool.length; i++) {
+            includesLowercase = password.includes(lowercasePool[i]) 
+            console.log(includesLowercase)  
+            if (includesLowercase === true) {
+                break;
+            } 
+        }
+        if (includesLowercase === false) {
+            charactersPool = charactersPoolArraySplit.join(",")
+            writePassword()
+            return
+        }
+    }
+    if (passwordNumbers === true) {
+        for (i = 0; i < numbersPool.length; i++) {
+            includesNumbers = password.includes(numbersPool[i]) 
+            console.log(includesNumbers)  
+            if (includesNumbers === true) {
+                break;
+            } 
+        }
+        if (includesNumbers === false) {
+            charactersPool = charactersPoolArraySplit.join(",")
+            writePassword()
+            return
+        }
+    }
+    if (specialCharacters === true) {
+        for (i = 0; i < specialCharactersPool.length; i++) {
+            includesSpecialCharacters = password.includes(specialCharactersPool[i]) 
+            console.log(includesSpecialCharacters)  
+            if (includesSpecialCharacters === true) {
+                break;
+            } 
+        }
+        if (includesSpecialCharacters === false) {
+            charactersPool = charactersPoolArraySplit.join(",")
+            writePassword()
+            return
+        }
+    }
 
-    passwordText.value = password;
+    console.log(password)
+    passwordText.innerHTML = password
+
+    charactersPool = []
 }
 // Add event listener to generate button
 generateBtn.addEventListener("click", generatePasswordClick);
