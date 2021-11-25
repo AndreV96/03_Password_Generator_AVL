@@ -135,3 +135,7 @@ button[disabled] {
     font-size: 0.8rem;
   }
 }
+
+.red-color {
+  color: hsl(360, 91%, 36%);
+}
