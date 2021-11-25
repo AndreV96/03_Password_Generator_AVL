@@ -5,6 +5,7 @@ let lowercasePool = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ
 let numbersPool = ["0","1","2","3","4","5","6","7","8","9"]
 let specialCharactersPool = ["¡","!","@","#","$","%","^","&","*","(",")","_","+","-","=","\"","[","\\","]","{","}",";","'",":","|",",",".","<",">","/","¿","?"]
 
+
 let passwordLength = 0
 let passwordUppercase = false
 let passwordLowercase = false
@@ -31,28 +32,28 @@ function passwordLengthPrompt() {
 function passwordUppercaseConfirm() {
     passwordUppercase = window.confirm('Do you want to use uppercase letters?')
     if (passwordUppercase === true) {
-        charactersPool += uppercasePool
+        charactersPool.push(...uppercasePool)
     }
     passwordLowercaseConfirm()
 }
 function passwordLowercaseConfirm() {
     passwordLowercase = window.confirm('Do you want to use lowercase letters?')
     if (passwordLowercase === true) {
-        charactersPool += "," + lowercasePool
+        charactersPool.push(...lowercasePool)
     }
     passwordNumbersConfirm()
 }
 function passwordNumbersConfirm() {
     passwordNumbers = window.confirm('Do you want to use numbers?')
     if (passwordNumbers === true) {
-        charactersPool += "," + numbersPool
+        charactersPool.push(...numbersPool)
     }
     specialCharactersConfirm()
 }
 function specialCharactersConfirm() {
     specialCharacters = window.confirm('Do you want to use special characters?')
     if (specialCharacters === true) {
-        charactersPool += "," + specialCharactersPool
+        charactersPool.push(...specialCharactersPool)
     }
     if (passwordUppercase === false &&
         passwordLowercase === false &&
@@ -72,10 +73,10 @@ function writePassword() {
     let includesLowercase = false
     let includesNumbers = false
     let includesSpecialCharacters = false
-    if (charactersPool[0] === ",") charactersPool = charactersPool.slice(1, charactersPool.Length )
-    charactersPoolArraySplit = charactersPool.split(",")
+    console.log(charactersPool)
+    
     for (i = 0; i < passwordLength; i++ ) {
-        password += charactersPoolArraySplit[Math.floor(Math.random()*charactersPoolArraySplit.length)]
+        password += charactersPool[Math.floor(Math.random()*charactersPool.length)]
     }
 
     if (passwordUppercase === true) {
@@ -86,7 +87,6 @@ function writePassword() {
             } 
         }
         if (includesUppercase === false) {
-            charactersPool = charactersPoolArraySplit.join(",")
             writePassword()
             return
         }
@@ -99,7 +99,6 @@ function writePassword() {
             } 
         }
         if (includesLowercase === false) {
-            charactersPool = charactersPoolArraySplit.join(",")
             writePassword()
             return
         }
@@ -112,7 +111,6 @@ function writePassword() {
             } 
         }
         if (includesNumbers === false) {
-            charactersPool = charactersPoolArraySplit.join(",")
             writePassword()
             return
         }
@@ -125,13 +123,12 @@ function writePassword() {
             } 
         }
         if (includesSpecialCharacters === false) {
-            charactersPool = charactersPoolArraySplit.join(",")
             writePassword()
             return
         }
     }
-
     console.log(password)
+    console.log(password.length)
     yourPasswordIs.innerHTML = "Your new password is:"
     yourPasswordIs.classList.add("red-color")
     passwordText.innerHTML = password
