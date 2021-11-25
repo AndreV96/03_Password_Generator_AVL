@@ -4,7 +4,7 @@ let uppercasePool = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ
 let lowercasePool = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z"]
 let numbersPool = ["0","1","2","3","4","5","6","7","8","9"]
 let specialCharactersPool = ["¡","!","@","#","$","%","^","&","*","(",")","_","+","-","=","\"","[","\\","]","{","}",";","'",":","|",",",".","<",">","/","¿","?"]
-console.log(charactersPool)
+
 let passwordLength = 0
 let passwordUppercase = false
 let passwordLowercase = false
@@ -16,6 +16,7 @@ var passwordText = document.querySelector("#password");
 
 
 function generatePasswordClick() {
+    console.log(charactersPool)
     passwordLengthPrompt()
 }
 function passwordLengthPrompt() {
@@ -28,39 +29,38 @@ function passwordLengthPrompt() {
     }
 }
 function passwordUppercaseConfirm() {
-    console.log(passwordLength)
     passwordUppercase = window.confirm('Do you want to use uppercase letters?')
     if (passwordUppercase === true) {
         charactersPool += uppercasePool
-        console.log(charactersPool)
     }
     passwordLowercaseConfirm()
 }
 function passwordLowercaseConfirm() {
-    console.log(passwordUppercase)
     passwordLowercase = window.confirm('Do you want to use lowercase letters?')
     if (passwordLowercase === true) {
         charactersPool += "," + lowercasePool
-        console.log(charactersPool)
     }
     passwordNumbersConfirm()
 }
 function passwordNumbersConfirm() {
-    console.log(passwordLowercase)
     passwordNumbers = window.confirm('Do you want to use numbers?')
     if (passwordNumbers === true) {
         charactersPool += "," + numbersPool
-        console.log(charactersPool)
     }
     specialCharactersConfirm()
 }
 function specialCharactersConfirm() {
-    console.log(passwordNumbers)
     specialCharacters = window.confirm('Do you want to use special characters?')
     if (specialCharacters === true) {
         charactersPool += "," + specialCharactersPool
-        console.log(charactersPool)
     }
+    if (passwordUppercase === false &&
+        passwordLowercase === false &&
+        passwordNumbers === false &&
+        specialCharacters === false) {
+            window.confirm('You need to select at leat one character type')
+            return
+        }
     writePassword()
 }
 
@@ -73,8 +73,9 @@ function writePassword() {
     let includesLowercase = false
     let includesNumbers = false
     let includesSpecialCharacters = false
-    if (charactersPool[0] === ",") charactersPool = charactersPool.slice(1, passwordLength)
+    if (charactersPool[0] === ",") charactersPool = charactersPool.slice(1, charactersPool.Length )
     charactersPoolArraySplit = charactersPool.split(",")
+    console.log(charactersPoolArraySplit)
     for (i = 0; i < passwordLength; i++ ) {
         password += charactersPoolArraySplit[Math.floor(Math.random()*charactersPoolArraySplit.length)]
     }
