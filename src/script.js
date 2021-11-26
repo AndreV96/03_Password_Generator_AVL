@@ -5,12 +5,12 @@ let lowercasePool = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ
 let numbersPool = ["0","1","2","3","4","5","6","7","8","9"]
 let specialCharactersPool = ["¡","!","@","#","$","%","^","&","*","(",")","_","+","-","=","\"","[","\\","]","{","}",";","'",":","|",",",".","<",">","/","¿","?"]
 
-
 let passwordLength = 0
 let passwordUppercase = false
 let passwordLowercase = false
 let passwordNumbers = false
 let specialCharacters = false
+let selectAtLeastOnePool = false  
 
 var generateBtn = document.querySelector("#generate");
 var passwordText = document.querySelector("#password");
@@ -18,15 +18,23 @@ var yourPasswordIs = document.querySelector('#yourPasswordIs')
 
 
 function generatePasswordClick() {
-    passwordLengthPrompt()
+    passwordLengthPrompt();
+    passwordUppercaseConfirm();
+    passwordLowercaseConfirm();
+    passwordNumbersConfirm();
+    specialCharactersConfirm(); 
+    atLeastOnePoolSelectedValidation();
+    console.log(selectAtLeastOnePool)
+    if (selectAtLeastOnePool === true) {writePassword()}
+
+        
 }
 function passwordLengthPrompt() {
     passwordLength = parseInt(window.prompt('How long (between 8 and 128 characters) should be your password?'), 10)
-    if (Number.isInteger(passwordLength) === true && passwordLength > 7 && passwordLength < 129) {
-        passwordUppercaseConfirm();
-    } else {
+    if (Number.isInteger(passwordLength) === false || passwordLength < 8 || passwordLength > 128) {
         window.alert('Please choose a number between 8 and 128');
         passwordLengthPrompt();
+        return
     }
 }
 function passwordUppercaseConfirm() {
@@ -34,46 +42,46 @@ function passwordUppercaseConfirm() {
     if (passwordUppercase === true) {
         charactersPool.push(...uppercasePool)
     }
-    passwordLowercaseConfirm()
 }
 function passwordLowercaseConfirm() {
     passwordLowercase = window.confirm('Do you want to use lowercase letters?')
     if (passwordLowercase === true) {
         charactersPool.push(...lowercasePool)
     }
-    passwordNumbersConfirm()
 }
 function passwordNumbersConfirm() {
     passwordNumbers = window.confirm('Do you want to use numbers?')
     if (passwordNumbers === true) {
         charactersPool.push(...numbersPool)
     }
-    specialCharactersConfirm()
 }
 function specialCharactersConfirm() {
     specialCharacters = window.confirm('Do you want to use special characters?')
     if (specialCharacters === true) {
         charactersPool.push(...specialCharactersPool)
     }
+}
+function atLeastOnePoolSelectedValidation() {
     if (passwordUppercase === false &&
         passwordLowercase === false &&
         passwordNumbers === false &&
         specialCharacters === false) {
-            window.confirm('You need to select at leat one character type')
-            return
-        }
-    writePassword()
+            window.confirm('You need to select at least one character type') 
+    } else {
+        selectAtLeastOnePool = true
+        console.log('si eligio una')
+    } 
 }
-
 
 // Write password to the #password input
 function writePassword() {
     let password = ''
+    console.log(charactersPool)
     let includesUppercase = false
     let includesLowercase = false
     let includesNumbers = false
     let includesSpecialCharacters = false
-    console.log(charactersPool)
+    selectAtLeastOnePool = false 
     
     for (i = 0; i < passwordLength; i++ ) {
         password += charactersPool[Math.floor(Math.random()*charactersPool.length)]
